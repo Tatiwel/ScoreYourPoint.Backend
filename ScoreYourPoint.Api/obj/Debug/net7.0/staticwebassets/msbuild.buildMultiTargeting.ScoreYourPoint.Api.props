@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ScoreYourPoint.Api.props" />
+</Project>
