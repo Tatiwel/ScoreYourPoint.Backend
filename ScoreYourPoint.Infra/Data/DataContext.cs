@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using ScoreYourPointApi.Domain;
+using ScoreYourPointAPI.Domain;
 
 namespace ScoreYourPointApi.Infra.Data
 {
@@ -15,10 +17,11 @@ namespace ScoreYourPointApi.Infra.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            // connect to postgres with connection string from app settings
             options.UseNpgsql(Configuration.GetConnectionString("ScoreYourPointApiDatabase"), b => b.MigrationsAssembly("ScoreYourPoint.Infra"));
         }
 
-        DbSet<ScoreYourPoint.Domain.Class1> Class1 { get; set; }
+        DbSet<User> Users { get; set; }
+        DbSet<Sport> Sports { get; set; }
+        DbSet<Position> Positions { get; set; }   
     }
 }
