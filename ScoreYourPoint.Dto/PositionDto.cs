@@ -8,7 +8,8 @@ namespace ScoreYourPoint.Dto
     {
         public PositionDto(Position position)
         {
-            this.position = position;
+            Id = position.Id;
+            Name = position.Name;
         }
 
         [Key]

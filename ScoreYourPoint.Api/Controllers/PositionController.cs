@@ -18,6 +18,14 @@ namespace ScoreYourPoint.Api.Controllers
         private readonly DataContext _dataContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PositionDto>>> Get()
+        {
+            var position = await _dataContext.Positions.ToListAsync();
+            return position.Select(w => new PositionDto(w)).ToList();
+             
+        }
+
         [HttpGet("{id}")]
 
         public async Task<ActionResult<PositionDto>> GetByID(int id)
