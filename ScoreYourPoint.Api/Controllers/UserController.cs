@@ -6,8 +6,13 @@ using ScoreYourPointApi.Infra.Data;
 
 namespace ScoreYourPoint.Api.Controllers
 {
+    [ApiController, Route("api/[controller]")]
     public class UserController : Controller
     {
+        public UserController(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
 
         private readonly DataContext _dataContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -26,7 +31,7 @@ namespace ScoreYourPoint.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Store([FromBody] UserDto User)
+        public async Task<ActionResult> Store([FromBody] UserRequestDto User)
         {
             await _dataContext.Users.AddAsync(new User
             {

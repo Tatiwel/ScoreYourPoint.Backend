@@ -7,4 +7,25 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="NovaPasta1\**" />
+    <EmbeddedResource Remove="NovaPasta1\**" />
+    <None Remove="NovaPasta1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Sports\SportService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Sports\SportService.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScoreYourPoint.Dto\ScoreYourPoint.Dto.csproj" />
+    <ProjectReference Include="..\ScoreYourPoint.Infra\ScoreYourPoint.Infra.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -6,8 +6,13 @@ using ScoreYourPointAPI.Domain;
 
 namespace ScoreYourPoint.Api.Controllers
 {
+    [ApiController, Route("api/[controller]")]
     public class SportController : Controller
     {
+        public SportController(DataContext dataContext) 
+        {
+            _dataContext = dataContext;
+        }
         // GET: SportController
         private readonly DataContext _dataContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -31,7 +36,6 @@ namespace ScoreYourPoint.Api.Controllers
         {
             await _dataContext.Sports.AddAsync(new Sport
             {
-                Id = sport.Id,
                 Name = sport.Name,
             });
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ScoreYourPoint.Dto
 {
-    class ProfileDto
+    public class ProfileDto
     {
 
 

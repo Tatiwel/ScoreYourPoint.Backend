@@ -7,9 +7,13 @@ using ScoreYourPointApi.Domain;
 
 namespace ScoreYourPoint.Api.Controllers
 {
-
+    [ApiController, Route("api/[controller]")]
     public class ProfileController : Controller
     {
+        public ProfileController(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
 
         private readonly DataContext _dataContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -30,12 +34,12 @@ namespace ScoreYourPoint.Api.Controllers
 
         // POST: ProfileController
         [HttpPost]
-        public async Task<ActionResult> Store([FromBody] ProfileDto profile)
+        public async Task<ActionResult> Store([FromBody] ProfileRequestDto profile)
         {
             await _dataContext.Profiles.AddAsync(new Profile
             {
-                Id = profile.Id,
                 Name = profile.Name,
+                User = _dataContext.Users.Where(w => w.Id == profile.UserId).FirstOrDefault(),
                 Gender = profile.Gender,
                 Age = profile.Age,
                 LeftOrRight = profile.LeftOrRight,

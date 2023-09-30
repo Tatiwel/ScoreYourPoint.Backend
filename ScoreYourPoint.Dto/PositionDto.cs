@@ -1,10 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using ScoreYourPointAPI.Domain;
 
 namespace ScoreYourPoint.Dto
 {
     public class PositionDto
     {
+        public PositionDto(Position position)
+        {
+            this.position = position;
+        }
 
         [Key]
         [Description("Demonstrates the position unique identification (ID) in the system")]

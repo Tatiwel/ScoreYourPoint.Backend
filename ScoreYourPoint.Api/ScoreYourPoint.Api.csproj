@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ScoreYourPoint.Dto\ScoreYourPoint.Dto.csproj" />
     <ProjectReference Include="..\ScoreYourPoint.Infra\ScoreYourPoint.Infra.csproj" />
   </ItemGroup>
 

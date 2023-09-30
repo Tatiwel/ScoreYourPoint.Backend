@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using ScoreYourPointApi.Domain;
 using ScoreYourPointAPI.Domain;
@@ -20,8 +21,9 @@ namespace ScoreYourPointApi.Infra.Data
             options.UseNpgsql(Configuration.GetConnectionString("ScoreYourPointApiDatabase"), b => b.MigrationsAssembly("ScoreYourPoint.Infra"));
         }
 
-        DbSet<User> Users { get; set; }
-        DbSet<Sport> Sports { get; set; }
-        DbSet<Position> Positions { get; set; }   
+        public DbSet<User> Users { get; set; }
+        public DbSet<Sport> Sports { get; set; }
+        public DbSet<Position> Positions { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
     }
 }
