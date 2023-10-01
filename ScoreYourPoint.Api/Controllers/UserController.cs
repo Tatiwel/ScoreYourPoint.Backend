@@ -31,12 +31,12 @@ namespace ScoreYourPoint.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Store([FromBody] UserRequestDto User)
+        public async Task<ActionResult> Store([FromBody] UserRequestDto user)
         {
             await _dataContext.Users.AddAsync(new User
             {
-                Email = User.Email,
-                Password = User.Password,
+                Email = user.Email,
+                Password = user.Password,
                 IsActive = true
             });
 
