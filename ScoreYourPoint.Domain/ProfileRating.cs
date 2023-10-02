@@ -13,7 +13,7 @@ public class ProfileRating
 
     public Profile Profile { get; set; }
 
-    public float Rate { get; set; }
+    public float Rating { get; set; }
 
     public string Description { get; set; }
 
