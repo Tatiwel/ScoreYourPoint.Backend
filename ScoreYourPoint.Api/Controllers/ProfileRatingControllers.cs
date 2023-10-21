@@ -36,10 +36,13 @@ namespace ScoreYourPoint.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> Store([FromBody] ProfileRatingRequestDto profileRating)
         {
+            var user = _dataContext.Users.FirstOrDefault(w => w.Id == profileRating.UserId);
+            var profile = _dataContext.Profiles.FirstOrDefault(w => w.Id == profileRating.ProfileId);
+
             await _dataContext.ProfileRatings.AddAsync(new ProfileRating
             {
-                //User user = profileRating.User,
-                //Profile profile = profileRating.Profile,
+                User = user,
+                Profile = profile,
                 Rating = profileRating.Rating,
                 Description = profileRating.Description,
             });
@@ -50,17 +53,34 @@ namespace ScoreYourPoint.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] ProfileRatingDto profileRating)
         {
-            var pR = await _dataContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var pR = await _dataContext.ProfileRatings.FirstOrDefaultAsync(u => u.Id == id);
 
             if (pR == null)
             {
                 return NotFound();
             }
 
-            Rating = profileRating.Rating;
-            Description = profileRating.Description;
 
-            _dataContext.Entry(pR).CurrentValues.SetValues(profileRating);
+
+            pR.Rating = profileRating.Rating;
+            pR.Description = profileRating.Description;
+
+            await _dataContext.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var pR = await _dataContext.ProfileRatings.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (pR == null)
+            {
+                return NotFound();
+            }
+
+            _dataContext.ProfileRatings.Remove(pR);
             await _dataContext.SaveChangesAsync();
 
             return NoContent();

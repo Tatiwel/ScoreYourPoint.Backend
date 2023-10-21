@@ -16,7 +16,6 @@ namespace ScoreYourPoint.Api.Controllers
         }
 
         private readonly DataContext _dataContext;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PositionDto>>> Get()

@@ -9,8 +9,8 @@ namespace ScoreYourPoint.Dto
 {
     public class ProfileRatingRequestDto
     {
-        public User User { get; set; }
-        public Profile Profile { get; set; }
+        public long UserId { get; set; }
+        public long ProfileId { get; set; }
         public float Rating { get; set; }
         public string? Description { get; set; }
     }
