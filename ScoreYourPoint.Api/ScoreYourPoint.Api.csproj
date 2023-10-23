@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ScoreYourPoint.Dto\ScoreYourPoint.Dto.csproj" />
     <ProjectReference Include="..\ScoreYourPoint.Infra\ScoreYourPoint.Infra.csproj" />
+    <ProjectReference Include="..\ScoreYourPoint.Services\ScoreYourPoint.Services.csproj" />
   </ItemGroup>
 
 </Project>

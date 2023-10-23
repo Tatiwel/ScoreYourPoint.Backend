@@ -1,4 +1,5 @@
-
+using ScoreYourPoint.Services.Sports;
+using ScoreYourPoint.Services.Users;
 using ScoreYourPointApi.Infra.Data;
 
 namespace ScoreYourPoint.Api
@@ -17,6 +18,8 @@ namespace ScoreYourPoint.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            AddServicesScoped(builder.Services);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +37,12 @@ namespace ScoreYourPoint.Api
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static void AddServicesScoped(IServiceCollection services)
+        {
+            services.AddScoped<ISportsService, SportsService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

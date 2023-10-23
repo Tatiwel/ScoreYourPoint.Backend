@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ScoreYourPoint.Dto;
+using ScoreYourPoint.Services.Sports;
 using ScoreYourPointApi.Infra.Data;
 using ScoreYourPointAPI.Domain;
 
@@ -9,57 +10,37 @@ namespace ScoreYourPoint.Api.Controllers
     [ApiController, Route("api/[controller]")]
     public class SportController : Controller
     {
-        public SportController(DataContext dataContext) 
-        {
-            _dataContext = dataContext;
-        }
-        // GET: SportController
         private readonly DataContext _dataContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ISportsService _sportsService;
 
+        public SportController(DataContext dataContext, ISportsService sportsService)
+        {
+            _dataContext = dataContext;
+            _sportsService = sportsService;
+        }
+
+        // GET: SportController
         [HttpGet("{id}")]
         public async Task<ActionResult<SportDto>> GetByID(int id)
         {
-            var Sport = await _dataContext.Sports.FirstOrDefaultAsync(sp => sp.Id == id);
-
-            if (Sport == null)
-            {
-                return NotFound();
-            }
-
-            return new SportDto(Sport);
+            return await _sportsService.GetSportByIdAsync(id);
         }
 
         // POST: SportController
         [HttpPost]
-        public async Task<ActionResult> Store([FromBody] SportDto sport)
+        public async Task<ActionResult> Store([FromBody] SportRequestDto sport)
         {
-            await _dataContext.Sports.AddAsync(new Sport
-            {
-                Name = sport.Name,
-            });
-
-            await _dataContext.SaveChangesAsync();
+            await _sportsService.CreateSportAsync(sport);
 
             return NoContent();
         }
 
         // PUT: SportController
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] SportDto sport)
+        public async Task<ActionResult> Update(int id, [FromBody] SportRequestDto sport)
         {
-            var Spt = await _dataContext.Sports.FirstOrDefaultAsync(sp => sp.Id == id);
-
-            if (Spt == null)
-            {
-                return NotFound();
-            }
-
-            Spt.Id = sport.Id;
-            Spt.Name = sport.Name;
-
-            _dataContext.Entry(Spt).CurrentValues.SetValues(sport);
-            await _dataContext.SaveChangesAsync();
+            await _sportsService.UpdateSportAsync(id, sport);
 
             return NoContent();
         }
@@ -68,15 +49,7 @@ namespace ScoreYourPoint.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var Spt = await _dataContext.Sports.FirstOrDefaultAsync(sp => sp.Id == id);
-
-            if (Spt == null)
-            {
-                return NotFound();
-            }
-
-            _dataContext.Remove(Spt);
-            await _dataContext.SaveChangesAsync();
+            await _sportsService.DeleteSportAsync(id);
 
             return NoContent();
         }
