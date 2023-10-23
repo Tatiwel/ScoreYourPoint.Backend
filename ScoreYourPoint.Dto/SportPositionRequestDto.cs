@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ScoreYourPointAPI.Domain;
 
 namespace ScoreYourPoint.Dto
 {
     public class SportPositionRequestDto
     {
+        public long SportId { get; set; }
+
+        public long PositionId { get; set; }
+
+        public Position Position { get; set; }
     }
 }
