@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using ScoreYourPoint.Infra.Utils.JWT;
 using ScoreYourPoint.Services.Sports;
 using ScoreYourPoint.Services.Users;
 using ScoreYourPointApi.Infra.Data;
+using System.Text;
 
 namespace ScoreYourPoint.Api
 {
@@ -19,6 +23,26 @@ namespace ScoreYourPoint.Api
             builder.Services.AddSwaggerGen();
 
             AddServicesScoped(builder.Services);
+
+            var key = Encoding.ASCII.GetBytes(JwtSettings.Secret);
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+
+                x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             var app = builder.Build();
 
