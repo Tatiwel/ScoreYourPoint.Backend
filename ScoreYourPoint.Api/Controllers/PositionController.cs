@@ -1,76 +1,56 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ScoreYourPoint.Dto;
-using ScoreYourPointAPI.Domain;
-using ScoreYourPointApi.Infra.Data;
-using Microsoft.EntityFrameworkCore;
-using ScoreYourPointApi.Domain;
+using ScoreYourPoint.Services.Positions;
 
 namespace ScoreYourPoint.Api.Controllers
 {
     [ApiController, Route("api/[controller]")]
     public class PositionController : Controller
     {
-        public PositionController(DataContext dataContext)
+        private readonly IPositionService _positionService;
+        public PositionController(IPositionService positionService)
         {
-            _dataContext = dataContext;
+            _positionService = positionService;
         }
-
-        private readonly DataContext _dataContext;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PositionDto>>> Get()
         {
-            var position = await _dataContext.Positions.ToListAsync();
-            return position.Select(w => new PositionDto(w)).ToList();
-             
+            var positions = await _positionService.GetPositionsAsync();
+            return Ok(positions);
         }
 
         [HttpGet("{id}")]
 
         public async Task<ActionResult<PositionDto>> GetByID(int id)
         {
-            var position = await _dataContext.Positions.FirstOrDefaultAsync(pos => pos.Id == id);
+            var position = await _positionService.GetPositionByIdAsync(id);
             if (position == null)
             {
                 return NotFound();
             }
-            return new PositionDto(position);
+            return position;
+            
         }
 
         [HttpPost]
         public async Task<ActionResult> Store([FromBody] PositionRequestDto position)
         {
-            await _dataContext.Positions.AddAsync(new Position
-            {
-                Name = position.Name,
-            });
-            await _dataContext.SaveChangesAsync();
-            return NoContent();
+            await _positionService.CreatePositionAsync(position);
+            return NoContent();    
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] PositionDto position)
         {
-            var Pos = await _dataContext.Positions.FirstOrDefaultAsync(pos => pos.Id == id);
-            if (Pos == null)
-            {
-                return NotFound();
-            }
-            Pos.Name = position.Name;
-            await _dataContext.SaveChangesAsync();
+            await _positionService.UpdatePositionAsync(id, position);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var Pos = await _dataContext.Positions.FirstOrDefaultAsync(pos => pos.Id == id);
-            if (Pos == null)
-            {
-                return NotFound();
-            }
-            _dataContext.Positions.Remove(Pos);
-            await _dataContext.SaveChangesAsync();
+            await _positionService.DeletePositionAsync(id);
             return NoContent();
         }
     }
