@@ -41,7 +41,7 @@ namespace ScoreYourPoint.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] PositionDto position)
+        public async Task<ActionResult> Update(int id, [FromBody] PositionRequestDto position)
         {
             await _positionService.UpdatePositionAsync(id, position);
             return NoContent();

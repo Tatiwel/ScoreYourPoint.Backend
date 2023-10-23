@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ScoreYourPoint.Dto;
+using ScoreYourPoint.Infra.Utils.Cryptography;
 using ScoreYourPointApi.Domain;
 using ScoreYourPointApi.Infra.Data;
 
@@ -33,13 +34,12 @@ namespace ScoreYourPoint.Services.Users
             var userEntity = new User
             {
                 Email = user.Email,
-                Password = user.Password, //lembrar de criptografar senha
+                Password = user.Password.GenerateHash(),
                 IsActive = true
             };
 
             await _dataContext.Users.AddAsync(userEntity);
             await _dataContext.SaveChangesAsync();
-
         }
 
         public async Task UpdateUserAsync(int id, UserRequestDto user)
